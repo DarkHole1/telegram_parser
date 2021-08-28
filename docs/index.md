@@ -1,37 +1,68 @@
-## Welcome to GitHub Pages
+<h1 align="center"><img src="logo.png" alt="tmesca" width="800"/></h1>
 
-You can use the [editor on GitHub](https://github.com/DarkHole1/tmesca/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+## What is it?
+**tmesca** is a Telegram public entity scanner by parsing the contents of short links to `t.me`. The principle is extremely simple:
+1. Generating a link to `t.me`
+2. Download its contents
+3. We analyze and determine what it is (user / channel / stickers, etc.)
+4. We save information to the desired database based on the type of entity
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Therefore **tmesca** doesn't require a Telegram account and doesn't depend on the Telegram API.
 
-### Markdown
+## Main features
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+1. Various link generation types:
+   * Linear search - generates all links with a certain length. In other words, bruteforce.
+   * Random search - generates random links from 5 to 32 characters long.
+   <!-- * Mutation search - input word and script creates mutations of this word and check all possibilities.  -->
+2. Parse content types:
+   * Channels
+   * Group
+   * Users
+   * Sticker Packs
+   * Bots
+3. Output to Telegram on the channel. 
+4. Turbo mode - can be toggled to speed up parsing. 
 
-```markdown
-Syntax highlighted code block
+## Known Issues
+Sometimes the scanner can skip existing links. This is due to the fact that Telegram returns a page by a link, which is no different from pages for non-existent links. There is a possibility that this is such a protection against scanning, but this happens too chaotically, so that it is difficult to determine the trigger criteria.
 
-# Header 1
-## Header 2
-### Header 3
+## Installation and Run
+You will need git, python3 and pip, and pipenv for the second method.
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+### Pure python
+This method is recommended for beginners. Just run these commands in the terminal.
+```bash
+git clone https://github.com/Antcating/telegram_parser.git
+cd telegram_parser/
+pip install -r requirements.txt
+python3 telegram_parser/console.py
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### pipenv
+A way for the advanced. This method assumes that you know what you are doing.
+```bash
+git clone https://github.com/Antcating/telegram_parser.git
+cd telegram_parser/
+pip install -r requirements.txt
+python3 telegram_parser/console.py
+```
 
-### Jekyll Themes
+## Telegram Output
+If you want to use Telegram output: <br />
+Before the first run, you **have to** change configuration file `telegram.ini`:
+```
+[Telegram]
+user_id = id here
+tg_token = bot token here
+```
+##### Instruction
+- Create Telegram bot using [BotFather](https://t.me/BotFather) and get Telegram Bot Token.
+- Get your Telegram account id. You can get it using [this bot](https://t.me/userinfobot). 
+- In the config file `telegram.ini` paste Telegram Bot Token to the `tg_token` row, and id into `user_id` row.   
+- Hooray! Everything ready. Enjoy!
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DarkHole1/tmesca/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Requirements and thanks 
+* [Beautiful Soup 4](https://www.crummy.com/software/BeautifulSoup/)
+* [Requests](https://docs.python-requests.org/en/master/)
+* [pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI)
